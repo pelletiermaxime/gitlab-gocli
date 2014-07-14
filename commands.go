@@ -13,6 +13,8 @@ var Commands = []cli.Command{
 	commandIssues,
 }
 
+var GlobalFlags = []cli.Flag{}
+
 var commandUsers = cli.Command{
 	Name:  "users",
 	Usage: "",
@@ -21,12 +23,17 @@ var commandUsers = cli.Command{
 	Action: doUsers,
 }
 
+var ProjectsFlags = []cli.Flag{
+	cli.BoolFlag{Name: "owned, o", Usage: "Only projects owned by the authenticated user."},
+}
+
 var commandProjects = cli.Command{
 	Name:  "projects",
 	Usage: "",
 	Description: `
 `,
 	Action: doProjects,
+	Flags:  ProjectsFlags,
 }
 
 var commandLogin = cli.Command{
@@ -58,9 +65,6 @@ func assert(err error) {
 }
 
 func doUsers(c *cli.Context) {
-}
-
-func doProjects(c *cli.Context) {
 }
 
 func doLogin(c *cli.Context) {
