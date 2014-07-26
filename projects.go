@@ -2,14 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	// log "github.com/cihub/seelog"
 	"github.com/codegangsta/cli"
-	"github.com/fatih/color"
-	"os"
-	"text/tabwriter"
 )
 
-type Project struct {
+type project struct {
 	Archived             bool   `json:"archived"`
 	CreatedAt            string `json:"created_at"`
 	DefaultBranch        string `json:"default_branch"`
@@ -44,13 +41,7 @@ type Project struct {
 }
 
 func doProjects(c *cli.Context) {
-	info := color.New(color.FgYellow, color.BgBlack).SprintFunc()
-	infoBold := color.New(color.FgYellow, color.BgBlack, color.Bold).SprintFunc()
-	normal := color.New(color.FgWhite, color.BgBlack).SprintFunc()
-	normalBold := color.New(color.FgWhite, color.BgBlack, color.Bold).SprintFunc()
-	w := new(tabwriter.Writer)
-	// Format in space-separated columns of minimal width 8
-	w.Init(os.Stdout, 8, 0, 3, ' ', 0)
+	w := getTabWriter()
 
 	var JSONProjects []byte
 	if c.Bool("o") || c.Bool("owned") {
@@ -59,12 +50,11 @@ func doProjects(c *cli.Context) {
 		JSONProjects = NewRequest("projects")
 	}
 
-	var projects []Project
+	var projects []project
 	json.Unmarshal(JSONProjects, &projects)
-	fmt.Fprintln(w, infoBold("ID"), "\t", info("Path with namespace"), "\t", info("Web URL"))
-	// fmt.Println(projects)
+	printHeader(w, "ID", "Path with namespace", "Web URL")
 	for _, project := range projects {
-		fmt.Fprintln(w, normalBold(fmt.Sprintf("%v", project.ID)), "\t", normal(project.PathWithNamespace), "\t", normal(project.WebURL))
+		printColumn(w, project.ID, project.PathWithNamespace, project.WebURL)
 	}
 	w.Flush()
 }

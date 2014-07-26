@@ -1,12 +1,16 @@
 package main
 
 import (
+	log "github.com/cihub/seelog"
 	"github.com/codegangsta/cli"
 	"os"
 )
 
 func main() {
 	parseConfig()
+	loadLogger()
+	defer log.Flush()
+
 	app := cli.NewApp()
 	app.Name = "gitlab-gocli"
 	app.Version = Version

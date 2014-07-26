@@ -2,15 +2,14 @@ package main
 
 import (
 	"github.com/codegangsta/cli"
-	"log"
-	"os"
 )
 
 var Commands = []cli.Command{
-	commandUsers,
+	// commandUsers,
 	commandProjects,
-	commandLogin,
-	commandIssues,
+	// commandLogin,
+	// commandIssues,
+	commandProject,
 }
 
 var GlobalFlags = []cli.Flag{}
@@ -29,11 +28,27 @@ var ProjectsFlags = []cli.Flag{
 
 var commandProjects = cli.Command{
 	Name:  "projects",
-	Usage: "",
+	Usage: "List projects",
 	Description: `
 `,
 	Action: doProjects,
 	Flags:  ProjectsFlags,
+}
+
+var commandProject = cli.Command{
+	Name:  "project",
+	Usage: "Create/delete/info a project",
+	Description: `
+`,
+	Subcommands: []cli.Command{
+		{
+			Name:   "info",
+			Usage:  "List all project info",
+			Action: doProjectInfo,
+		},
+	},
+	// Action: doProject,
+	// Flags:  ProjectFlags,
 }
 
 var commandLogin = cli.Command{
@@ -50,25 +65,4 @@ var commandIssues = cli.Command{
 	Description: `
 `,
 	Action: doIssues,
-}
-
-func debug(v ...interface{}) {
-	if os.Getenv("DEBUG") != "" {
-		log.Println(v...)
-	}
-}
-
-func assert(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func doUsers(c *cli.Context) {
-}
-
-func doLogin(c *cli.Context) {
-}
-
-func doIssues(c *cli.Context) {
 }
