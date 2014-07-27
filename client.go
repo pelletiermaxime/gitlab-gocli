@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	log "github.com/cihub/seelog"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // Config is for the information you need to config
@@ -26,17 +28,49 @@ func parseConfig() *Config {
 	return config
 }
 
-func NewRequest(rawURL string) []byte {
-	url := fmt.Sprintf("%s/%s?private_token=%s", config.Host, rawURL, config.PrivateToken)
-	// log.Debug(url)
-	response, err := http.Get(url)
-	if err != nil {
-		log.Error(err)
-	}
+func ReadRequest(response *http.Response) []byte {
 	contents, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
 		log.Error(err)
 	}
 	return contents
+}
+
+func NewRequest(rawURL string) []byte {
+	return NewRequestGET(rawURL)
+}
+
+func NewRequestGET(rawURL string) []byte {
+	url := fmt.Sprintf("%s/%s?private_token=%s", config.Host, rawURL, config.PrivateToken)
+	response, err := http.Get(url)
+	if err != nil {
+		log.Error(err)
+	}
+	content := ReadRequest(response)
+	return content
+}
+
+func NewRequestPOST(rawURL string, values url.Values) []byte {
+	url := fmt.Sprintf("%s/%s?private_token=%s", config.Host, rawURL, config.PrivateToken)
+	response, err := http.PostForm(url, values)
+	if err != nil {
+		log.Error(err)
+	}
+	content := ReadRequest(response)
+	return content
+}
+
+func NewRequestDELETE(rawURL string) []byte {
+	url := fmt.Sprintf("%s/%s?private_token=%s", config.Host, rawURL, config.PrivateToken)
+	// response, err := http.PostForm(url, values)
+	var pomme io.Reader
+	request, err := http.NewRequest("DELETE", url, pomme)
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		log.Error(err)
+	}
+	content := ReadRequest(response)
+	return content
 }

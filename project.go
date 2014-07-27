@@ -78,5 +78,17 @@ func doProjectInfo(c *cli.Context) {
 	printHeader(w, "ID", "Path with namespace", "Web URL")
 	printColumn(w, project.ID, project.PathWithNamespace, project.WebURL)
 	w.Flush()
+}
 
+func doProjectCreate(c *cli.Context) {
+	projectName := c.Args().First()
+	values := url.Values{"name": {projectName}}
+	response := NewRequestPOST("projects", values)
+	log.Debug(string(response))
+}
+
+func doProjectDelete(c *cli.Context) {
+	projectID := c.Args().First()
+	response := NewRequestDELETE("projects/" + projectID)
+	log.Debug(string(response))
 }

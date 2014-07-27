@@ -46,6 +46,16 @@ var commandProject = cli.Command{
 			Usage:  "List all project info",
 			Action: doProjectInfo,
 		},
+		{
+			Name:   "create",
+			Usage:  "Create a new project",
+			Action: doProjectCreate,
+		},
+		{
+			Name:   "delete",
+			Usage:  "Delete a project",
+			Action: doProjectDelete,
+		},
 	},
 	// Action: doProject,
 	// Flags:  ProjectFlags,
