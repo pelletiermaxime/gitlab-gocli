@@ -1,0 +1,5 @@
+{
+	"Os": "linux,darwin,windows",
+	"ResourcesInclude": "config.exemple.json,README*,LICENSE*",
+	"ConfigVersion": "0.9"
+}
