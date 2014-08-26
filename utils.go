@@ -69,26 +69,32 @@ func getTabWriter() (w *tabwriter.Writer) {
 	return w
 }
 
-func printColumn(w *tabwriter.Writer, cells ...interface{}) {
+func printLine(w *tabwriter.Writer, cells ...interface{}) {
 	normal := color.New(color.FgWhite, color.BgBlack).SprintFunc()
 	normalBold := color.New(color.FgWhite, color.BgBlack, color.Bold).SprintFunc()
-	// for cell := range cells {
-	fmt.Fprintln(w,
-		normalBold(fmt.Sprintf("%v", cells[0])), "\t",
-		normal(cells[1]), "\t",
-		normal(cells[2]),
-	)
-	// }
+
+	line := ""
+	for i, v := range cells {
+		if i == 0 {
+			line += normalBold(v) + "\t"
+		} else {
+			line += normal(v) + "\t"
+		}
+	}
+	fmt.Fprintln(w, line)
 }
 
 func printHeader(w *tabwriter.Writer, cells ...interface{}) {
 	info := color.New(color.FgYellow, color.BgBlack).SprintFunc()
 	infoBold := color.New(color.FgYellow, color.BgBlack, color.Bold).SprintFunc()
-	// for cell := range cells {
-	fmt.Fprintln(w,
-		infoBold("ID"), "\t",
-		info("Path with namespace"), "\t",
-		info("Web URL"),
-	)
-	// }
+
+	header := ""
+	for i, v := range cells {
+		if i == 0 {
+			header += infoBold(v) + "\t"
+		} else {
+			header += info(v) + "\t"
+		}
+	}
+	fmt.Fprintln(w, header)
 }

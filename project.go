@@ -75,15 +75,17 @@ func doProjectInfo(c *cli.Context) {
 		return
 	}
 	w := getTabWriter()
-	printHeader(w, "ID", "Path with namespace", "Web URL")
-	printColumn(w, project.ID, project.PathWithNamespace, project.WebURL)
+	printHeader(w, "ID", "Path with namespace", "Web URL", "Namespace ID")
+	printLine(w, project.ID, project.PathWithNamespace, project.WebURL, project.Namespace.ID)
 	w.Flush()
 }
 
 func doProjectCreate(c *cli.Context) {
 	projectName := c.Args().First()
-	values := url.Values{"name": {projectName}}
-	response := NewRequestPOST("projects", values)
+	v := url.Values{}
+	v.Set("name", projectName)
+	// v.Set("namespace_id", "4")
+	response := NewRequestPOST("projects", v)
 	log.Debug(string(response))
 }
 

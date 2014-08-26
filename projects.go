@@ -54,7 +54,7 @@ func doProjects(c *cli.Context) {
 	json.Unmarshal(JSONProjects, &projects)
 	printHeader(w, "ID", "Path with namespace", "Web URL")
 	for _, project := range projects {
-		printColumn(w, project.ID, project.PathWithNamespace, project.WebURL)
+		printLine(w, project.ID, project.PathWithNamespace, project.WebURL)
 	}
 	w.Flush()
 }
