@@ -22,8 +22,12 @@ var commandUsers = cli.Command{
 	Action: doUsers,
 }
 
-var ProjectsFlags = []cli.Flag{
+var projectsFlags = []cli.Flag{
 	cli.BoolFlag{Name: "owned, o", Usage: "Only projects owned by the authenticated user."},
+}
+
+var projectCreateFlags = []cli.Flag{
+	cli.IntFlag{Name: "namespace-id, n", Usage: "Namespace ID."},
 }
 
 var commandProjects = cli.Command{
@@ -32,7 +36,7 @@ var commandProjects = cli.Command{
 	Description: `
 `,
 	Action: doProjects,
-	Flags:  ProjectsFlags,
+	Flags:  projectsFlags,
 }
 
 var commandProject = cli.Command{
@@ -50,6 +54,7 @@ var commandProject = cli.Command{
 			Name:   "create",
 			Usage:  "Create a new project",
 			Action: doProjectCreate,
+			Flags:  projectCreateFlags,
 		},
 		{
 			Name:   "delete",

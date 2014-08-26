@@ -53,6 +53,8 @@ func NewRequestGET(rawURL string) []byte {
 
 func NewRequestPOST(rawURL string, values url.Values) []byte {
 	url := fmt.Sprintf("%s/%s?private_token=%s", config.Host, rawURL, config.PrivateToken)
+	// fmt.Println(url)
+	// fmt.Println(values)
 	response, err := http.PostForm(url, values)
 	if err != nil {
 		log.Error(err)

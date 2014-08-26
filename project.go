@@ -84,7 +84,9 @@ func doProjectCreate(c *cli.Context) {
 	projectName := c.Args().First()
 	v := url.Values{}
 	v.Set("name", projectName)
-	// v.Set("namespace_id", "4")
+	if c.Int("namespace-id") != 0 {
+		v.Set("namespace_id", c.String("namespace-id"))
+	}
 	response := NewRequestPOST("projects", v)
 	log.Debug(string(response))
 }
