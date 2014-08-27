@@ -10,6 +10,7 @@ var Commands = []cli.Command{
 	// commandLogin,
 	// commandIssues,
 	commandProject,
+	commandGui,
 }
 
 var GlobalFlags = []cli.Flag{}
@@ -80,4 +81,13 @@ var commandIssues = cli.Command{
 	Description: `
 `,
 	Action: doIssues,
+}
+
+var commandGui = cli.Command{
+	Name:  "gui",
+	Usage: "Graphical interface",
+	Description: `
+`,
+	Action: doGUI,
+	// Flags:  projectsFlags,
 }
